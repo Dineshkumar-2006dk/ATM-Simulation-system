@@ -247,30 +247,25 @@
         alert("Account deleted.");
       }
     }
-      
-  let inactivityTime = function () {
-    let timer;
-    
-    function resetTimer() {
-      clearTimeout(timer);
+
+    // 🕒 Auto Logout After 1 Minute of Inactivity
+    let logoutTimer;
+    function resetInactivityTimer() {
+      clearTimeout(logoutTimer);
       if (currentUser) {
-        timer = setTimeout(() => {
-          alert("You have been logged out due to inactivity.");
+        logoutTimer = setTimeout(() => {
+          alert("Logged out due to inactivity.");
           logout();
-        }, 60000); 
+        }, 60000); // 1 minute = 60000 ms
       }
     }
 
-    // Events that reset the timer
-    window.onload = resetTimer;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-    document.ontouchstart = resetTimer; // mobile
-    document.onclick = resetTimer;
-  };
-
-  inactivityTime();
-
+    // Listen to activity events
+    window.onload = resetInactivityTimer;
+    document.onmousemove = resetInactivityTimer;
+    document.onkeypress = resetInactivityTimer;
+    document.onclick = resetInactivityTimer;
+    document.ontouchstart = resetInactivityTimer;
   </script>
 </body>
 </html>
