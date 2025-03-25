@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ATM Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button onclick="toggleDarkMode()" class="toggle-btn">Toggle Dark Mode</button>
+
+  <div class="screen active" id="login-screen">
+    <h2>ATM Login</h2>
+    <input type="text" id="login-username" placeholder="Username">
+    <input type="password" id="pin" placeholder="PIN">
+    <button onclick="login()">Login</button>
+    <p>Don't have an account? <a href="#" onclick="showScreen('register-screen')">Register</a></p>
+  </div>
+
+  <div class="screen" id="register-screen">
+    <h2>Register</h2>
+    <input type="text" id="register-username" placeholder="Username">
+    <input type="password" id="register-pin" placeholder="New PIN">
+    <input type="number" id="register-balance" placeholder="Initial Balance">
+    <button onclick="register()">Create Account</button>
+    <button onclick="showScreen('login-screen')">Back to Login</button>
+  </div>
+
+  <div class="screen" id="menu-screen">
+    <h2>Welcome to ATM</h2>
+    <button onclick="showScreen('withdraw-screen')">Withdraw</button>
+    <button onclick="showScreen('deposit-screen')">Deposit</button>
+    <button onclick="checkBalance()">Balance Check</button>
+    <button onclick="showScreen('pin-screen')">Change PIN</button>
+    <button onclick="showScreen('history-screen')">Transaction History</button>
+    <button onclick="showScreen('delete-screen')">Delete Account</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div class="screen" id="withdraw-screen">
+    <input type="number" id="withdraw-amt" placeholder="Enter amount to withdraw">
+    <button onclick="withdraw()">Withdraw</button>
+    <button onclick="showScreen('menu-screen')">Back</button>
+  </div>
+
+  <div class="screen" id="deposit-screen">
+    <input type="number" id="deposit-amt" placeholder="Enter amount to deposit">
+    <button onclick="deposit()">Deposit</button>
+    <button onclick="showScreen('menu-screen')">Back</button>
+  </div>
+
+  <div class="screen" id="pin-screen">
+    <input type="password" id="new-pin" placeholder="Enter new PIN">
+    <button onclick="changePin()">Change PIN</button>
+    <button onclick="showScreen('menu-screen')">Back</button>
+  </div>
+
+  <div class="screen" id="history-screen">
+    <h3>Transaction History</h3>
+    <div id="history-list"></div>
+    <button onclick="showScreen('menu-screen')">Back to Menu</button>
+  </div>
+
+  <div class="screen" id="delete-screen">
+    <p>Are you sure you want to delete your account?</p>
+    <button onclick="deleteAccount()">Yes, Delete</button>
+    <button onclick="showScreen('menu-screen')">Cancel</button>
+  </div>
+
+  <div id="output-msg" class="message"></div>
+
+  <footer>
+    <p>Created by DINESHKUMAR S</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
