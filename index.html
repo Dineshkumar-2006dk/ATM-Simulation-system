@@ -247,6 +247,30 @@
         alert("Account deleted.");
       }
     }
+      
+  let inactivityTime = function () {
+    let timer;
+    
+    function resetTimer() {
+      clearTimeout(timer);
+      if (currentUser) {
+        timer = setTimeout(() => {
+          alert("You have been logged out due to inactivity.");
+          logout();
+        }, 60000); 
+      }
+    }
+
+    // Events that reset the timer
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.ontouchstart = resetTimer; // mobile
+    document.onclick = resetTimer;
+  };
+
+  inactivityTime();
+
   </script>
 </body>
 </html>
