@@ -75,6 +75,110 @@
     <p>Created by DINESHKUMAR S</p>
   </footer>
 
-  <script src="script.js"></script>
+  
+  <script>
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    let currentUser = null;
+    let darkMode = localStorage.getItem("darkMode") === "true";
+    if (darkMode) document.body.classList.add("dark");
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      darkMode = !darkMode;
+      localStorage.setItem("darkMode", darkMode);
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(div => div.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      if (id === "history-screen") loadHistory();
+    }
+
+    function saveUsers() {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function login() {
+      const username = document.getElementById("login-username").value;
+      const pin = document.getElementById("pin").value;
+      if (users[username] && users[username].pin === pin) {
+        currentUser = username;
+        showScreen("menu-screen");
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+
+    function register() {
+      const username = document.getElementById("register-username").value;
+      const pin = document.getElementById("register-pin").value;
+      const balance = parseFloat(document.getElementById("register-balance").value);
+      if (!username || !pin || isNaN(balance)) return alert("Fill all fields.");
+      if (users[username]) return alert("User already exists.");
+      users[username] = { pin: pin, balance: balance, history: [] };
+      saveUsers();
+      alert("Registered successfully!");
+      showScreen("login-screen");
+    }
+
+    function logout() {
+      currentUser = null;
+      showScreen("login-screen");
+    }
+
+    function withdraw() {
+      const amt = parseFloat(document.getElementById("withdraw-amt").value);
+      if (amt > 0 && amt <= users[currentUser].balance) {
+        users[currentUser].balance -= amt;
+        users[currentUser].history.push("Withdraw ₹" + amt);
+        document.getElementById("output-msg").innerText = "Withdrawn ₹" + amt;
+        saveUsers();
+      } else {
+        document.getElementById("output-msg").innerText = "Invalid amount.";
+      }
+    }
+
+    function deposit() {
+      const amt = parseFloat(document.getElementById("deposit-amt").value);
+      if (amt > 0) {
+        users[currentUser].balance += amt;
+        users[currentUser].history.push("Deposit ₹" + amt);
+        document.getElementById("output-msg").innerText = "Deposited ₹" + amt;
+        saveUsers();
+      } else {
+        document.getElementById("output-msg").innerText = "Invalid amount.";
+      }
+    }
+
+    function checkBalance() {
+      document.getElementById("output-msg").innerText = "Balance: ₹" + users[currentUser].balance;
+    }
+
+    function changePin() {
+      const newPin = document.getElementById("new-pin").value;
+      if (newPin) {
+        users[currentUser].pin = newPin;
+        users[currentUser].history.push("PIN changed.");
+        saveUsers();
+        document.getElementById("output-msg").innerText = "PIN changed.";
+      } else {
+        document.getElementById("output-msg").innerText = "Enter a valid PIN.";
+      }
+    }
+
+    function loadHistory() {
+      const list = users[currentUser].history || [];
+      document.getElementById("history-list").innerHTML = list.map(i => "<div>" + i + "</div>").join("");
+    }
+
+    function deleteAccount() {
+      if (confirm("Delete account permanently?")) {
+        delete users[currentUser];
+        saveUsers();
+        logout();
+        alert("Account deleted.");
+      }
+    }
+  </script>
 </body>
 </html>
